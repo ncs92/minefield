@@ -431,7 +431,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 //campo.setVisible(true);
                 jPanel1.add(campo[i][j]);
                 jPanel1.repaint();
-              
+
             }
         }
         montaJogo(tam);
@@ -446,17 +446,17 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
         al = new MouseAdapter() {
             public void actionPerformed(ActionEvent e) {
-                  cont++;  
+                cont++;
                 // verifica se ganhou
-                
+
                 if (p.getCampo().getMapa().equals("Normal")) {
                     totalClicado = posZero.size() + cont + posBombas.size();
                 } else {
-                    totalClicado = posZero.size() + cont +  Integer.parseInt(String.valueOf(quantidadeMapa));
+                    totalClicado = posZero.size() + cont + Integer.parseInt(String.valueOf(quantidadeMapa));
                 }
                 System.out.println("\n Total clicado :" + totalClicado);
                 System.out.println("\n Bombas :" + posBombas.size());
-                if (totalClicado  == (tam * tam) ) {
+                if (totalClicado == (tam * tam)) {
                     int op = JOptionPane.showConfirmDialog(null, "Você ganhou!! Deseja ir para o proximo nivel ?!", "You Winnn!!!", JOptionPane.YES_NO_OPTION);
                     if (op == JOptionPane.YES_OPTION) {
                         dispose();
@@ -536,7 +536,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                     }
 
                 }
-              
+
             }
 
             private void sorteio() {
@@ -585,22 +585,104 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                 JButton botaoClicado = (JButton) e.getSource();
-                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {  
-                    botaoClicado.setBackground(Color.black);
+                JButton botaoClicado = (JButton) e.getSource();
+                if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
+                    Font fonte = new Font("Serif", Font.BOLD, 20);
+//                JButton botaoClicado = (JButton) e.getSource();
+                    //////////////////////Clicou nas bombas ////////////////////
+                    if (botaoClicado.getIcon() == null) {
+                        if (botaoClicado.getName().equals("0")) {
+                            for (int k = 0; k < posBombas.size(); k++) {
+                                int i = Integer.parseInt(posBombas.get(k).split(" ")[0]);
+                                int j = Integer.parseInt(posBombas.get(k).split(" ")[1]);
+
+                                if (tam == 4) {
+                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
+                                    campo[i][j].setIcon(icon);
+                                } else if (tam == 8) {
+                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
+                                    campo[i][j].setIcon(icon);
+                                } else if (tam == 16) {
+                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
+                                    campo[i][j].setIcon(icon);
+                                } else {
+                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
+                                    campo[i][j].setIcon(icon);
+                                }
+                                campo[i][j].setOpaque(false);
+                                campo[i][j].setBorderPainted(false);
+                                campo[i][j].setContentAreaFilled(false);
+                            }
+
+                            //////////////////////////////////////////////////////voce perdeu
+                            int op = JOptionPane.showConfirmDialog(null, "Você perdeu! Deseja continuar no jogo ?", "You Can Do It!!", JOptionPane.YES_NO_OPTION);
+                            if (op == JOptionPane.YES_OPTION) {
+                                executaTempo = false;
+                                dispose();
+                                new Principal(null, true).setVisible(true);
+                            } else {
+                                System.exit(0);
+
+                            }
+                        } else { ///// caso nao tenha clicado numa bomba entra nesse else
+                            if (cont == 0) { /// caso seja o primeiro a clicar entra nesse
+                                int i = 0, j = 0;
+                                for (int k = 0; k < posZero.size(); k++) {
+                                    i = Integer.parseInt(posZero.get(k).split(" ")[0]);
+                                    j = Integer.parseInt(posZero.get(k).split(" ")[1]);
+                                    campo[i][j].setOpaque(false);
+                                    campo[i][j].setBorderPainted(false);
+                                    campo[i][j].setContentAreaFilled(false);
+                                }
+
+                                sorteio();
+
+                            }
+                            if (botaoClicado.getName().equals("99")) {
+                                botaoClicado.setOpaque(false);
+                                botaoClicado.setBorderPainted(false);
+                                botaoClicado.setContentAreaFilled(false);
+                                botaoClicado.setEnabled(false);
+
+                            } else {
+                                botaoClicado.setOpaque(false);
+                                botaoClicado.setBorderPainted(false);
+                                botaoClicado.setFont(fonte);
+                                botaoClicado.setContentAreaFilled(false);
+                                botaoClicado.setText(botaoClicado.getName());
+                                botaoClicado.setForeground(Color.red);
+                                botaoClicado.setEnabled(false);
+                            }
+
+                        }
+                    }
                 }
-                if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {  
-                    botaoClicado.setBackground(Color.red);
+
+                if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
+                    ImageIcon icon;
+                    if (botaoClicado.getIcon() == null) {
+                        if (tam == 4) {
+                            icon = new ImageIcon(getClass().getResource("/img/flag4.png"));
+                        } else if (tam == 8) {
+                            icon = new ImageIcon(getClass().getResource("/img/flag3.png"));
+                        } else if (tam == 16) {
+                            icon = new ImageIcon(getClass().getResource("/img/flag2.png"));
+                        } else {
+                            icon = new ImageIcon(getClass().getResource("/img/flag.png"));
+                        }
+                        botaoClicado.setIcon(icon);
+                    } else {
+                        botaoClicado.setIcon(null);
+                    }
                 }
-                System.out.println("jhsjkajsjaksaj");
+
             }
-            
-       
+
         };
         for (int i = 0; i < tam; i++) {
             for (int j = 0; j < tam; j++) {
                 campo[i][j].addMouseListener(al);
-                                                                                                                                                        
+
             }
         }
 
