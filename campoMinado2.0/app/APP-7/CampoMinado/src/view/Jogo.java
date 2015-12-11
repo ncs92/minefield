@@ -5,6 +5,7 @@
  */
 package view;
 
+import classes.DAOPartida;
 import classes.Global;
 import classes.Jogador;
 import classes.Partida;
@@ -51,6 +52,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private double quantidadeMapa = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private int qtdJogo = 0;
     private int dica = 0;
+    private int pontos = 100;
     private final ArrayList<String> posBombas = new ArrayList<>();
     private final ArrayList<String> posZero = new ArrayList<>();
     private final ArrayList<String> mapa = new ArrayList<>();
@@ -117,8 +119,6 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         jButton9 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabelBomba = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabelNivel = new javax.swing.JLabel();
         jButtonVitorias = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabelTotalB = new javax.swing.JLabel();
@@ -216,13 +216,6 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         jLabelBomba.setForeground(new java.awt.Color(0, 204, 0));
         jLabelBomba.setName("jBomba"); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel5.setText("Nível :");
-
-        jLabelNivel.setFont(new java.awt.Font("Arial Black", 0, 11)); // NOI18N
-        jLabelNivel.setForeground(new java.awt.Color(0, 204, 153));
-
         jButtonVitorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/trophy.png"))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
@@ -247,10 +240,10 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)
-                                .addGap(229, 229, 229)
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(216, 216, 216)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelBomba, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -260,16 +253,9 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonDica, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton6))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabelBomba, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonDica, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)
                         .addGap(5, 5, 5)
                         .addComponent(jButton9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -297,16 +283,13 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3))
+                        .addComponent(jLabel2))
                     .addComponent(jLabelBomba, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonVitorias)
-                    .addComponent(jLabel5)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabelTotalB, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabelNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabelTotalB, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -416,9 +399,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelBomba;
-    private javax.swing.JLabel jLabelNivel;
     private javax.swing.JLabel jLabelTotalB;
     private componentes.UJPanelImagem jPanel1;
     private javax.swing.JSeparator jSeparator1;
@@ -466,7 +447,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
     public void montaJogo(int tam) {
         JButton vet = new JButton();
-        
+
         MouseAdapter al;
         jLabel2.setText(p.getJogador().getNome());
 
@@ -621,17 +602,30 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         totalClicado = cont + posBombas.size();
 
                     } else {
-                        totalClicado = cont + Integer.parseInt(String.valueOf(quantidadeMapa))+ posBombas.size();
+                        totalClicado = cont + Integer.parseInt(String.valueOf(quantidadeMapa)) + posBombas.size();
 
                     }
 
                     if (totalClicado == (tam * tam)) {
+                        DAOPartida dao = null;
+                        p.getJogador().setPontuacao(pontos);
+                        ArrayList<Partida> lista = (ArrayList) dao.list();
+                        if(lista.isEmpty()){
+                            dao.insert(p);
+                        }else{
+                            if(p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()){
+                                
+                                dao.update(lista);
+                            }
+                        }
+                        JOptionPane.showMessageDialog(null, pontos, "Pontuação!!", JOptionPane.OK_OPTION);
+                        
                         int op = JOptionPane.showConfirmDialog(null, "Você ganhou!! Deseja ir para o proximo nivel ?!", "You Winnn!!!", JOptionPane.YES_NO_OPTION);
                         if (op == JOptionPane.YES_OPTION) {
                             dispose();
                             new Principal(null, true).setVisible(false);
+                            setDefaultCloseOperation(Jogo.EXIT_ON_CLOSE);
 
-                            // Global.setObjeto(p);
                         } else {
                             dispose();
                         }
@@ -687,7 +681,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         ////////////////////////COLOCA O VALOR DOS BOTOES//////////////////////////////////////////////////
         colocaValorNosBotoes();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
-       // System.out.println("\n zero "+posZero.get(0).toString());
+        // System.out.println("\n zero "+posZero.get(0).toString());
     }
 
     @Override
@@ -696,6 +690,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }
 
     private void dica() {
+        pontos -= 10;
         ArrayList<String> lista = new ArrayList<String>();
         Font fonte = new Font("Serif", Font.BOLD, 20);
         int i = 0, j = 0;

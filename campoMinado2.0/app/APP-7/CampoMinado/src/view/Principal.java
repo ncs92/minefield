@@ -316,6 +316,7 @@ public class Principal extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void chamarJogo(int i) throws IOException, URISyntaxException {
+        
         new Nickname(null, true).setVisible(true);
 
         Partida p = new Partida();
@@ -333,6 +334,7 @@ public class Principal extends javax.swing.JDialog {
         this.dispose();
         new Jogo(null, true).setVisible(true);
         this.setDefaultCloseOperation(Principal.EXIT_ON_CLOSE);
+    
     }
 
 }
