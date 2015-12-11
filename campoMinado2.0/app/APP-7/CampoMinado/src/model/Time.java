@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -18,6 +18,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Time implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +27,14 @@ public class Time implements Serializable {
     private int minutos;
     @Column
     private int segundos;
-    @Column
-    private int milisegundos;
 
     public Time() {
     }
 
-    public Time(int minutos, int segundos, int milisegundos) {
+    public Time(int minutos, int segundos) {
         this.minutos = minutos;
         this.segundos = segundos;
-        this.milisegundos = milisegundos;
     }
-    
 
     public int getMinutos() {
         return minutos;
@@ -53,14 +50,6 @@ public class Time implements Serializable {
 
     public void setSegundos(int segundos) {
         this.segundos = segundos;
-    }
-
-    public int getMilisegundos() {
-        return milisegundos;
-    }
-
-    public void setMilisegundos(int milisegundos) {
-        this.milisegundos = milisegundos;
     }
 
     @Override
@@ -84,16 +73,38 @@ public class Time implements Serializable {
         if (this.segundos != other.segundos) {
             return false;
         }
-        if (this.milisegundos != other.milisegundos) {
-            return false;
-        }
+
         return true;
+    }
+
+    public void adicionaMinutos() {
+        this.minutos += 1;
+    }
+
+    public void diminuiMinutos() {
+        this.minutos -= 1;
+    }
+
+    public void adicionaSegundos() {
+        this.setSegundos(getSegundos() + 1);        
+    }
+
+    public void diminuiSegundos() {
+        this.setSegundos(getSegundos() - 1);
+    }
+
+    public void adicionaTempo() {
+        if (this.minutos < 0 || this.segundos < 0) {
+            this.minutos = 1;
+            this.segundos = 1;
+        }
+//        Time t = new Time(minutos, segundos);
+//        Global.setObjeto(tempo);
     }
 
     @Override
     public String toString() {
-        return "Time{" + "minutos=" + minutos + ", segundos=" + segundos + ", milisegundos=" + milisegundos + '}';
+        return "Time{" + "minutos=" + minutos + ", segundos=" + segundos + '}';
     }
-    
-    
+
 }

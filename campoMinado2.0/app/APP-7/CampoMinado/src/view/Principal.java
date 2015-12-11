@@ -5,10 +5,10 @@
  */
 package view;
 
-import classes.Campo;
-import classes.Global;
-import classes.Jogador;
-import classes.Partida;
+import model.Campo;
+import model.Global;
+import model.Jogador;
+import model.Partida;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

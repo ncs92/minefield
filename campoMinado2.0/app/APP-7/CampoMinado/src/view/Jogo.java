@@ -5,10 +5,10 @@
  */
 package view;
 
-import classes.Global;
-import classes.Jogador;
-import classes.Partida;
-import classes.Time;
+import model.Global;
+import model.Jogador;
+import model.Partida;
+import model.Time;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
