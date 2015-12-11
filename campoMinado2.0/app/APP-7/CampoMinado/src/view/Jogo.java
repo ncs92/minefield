@@ -5,11 +5,25 @@
  */
 package view;
 
+<<<<<<< HEAD
 import model.DAOPartida;
+=======
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/master
 import model.Global;
 import model.Jogador;
 import model.Partida;
 import model.Time;
+<<<<<<< HEAD
+=======
+=======
+import classes.DAOPartida;
+import classes.Global;
+import classes.Jogador;
+import classes.Partida;
+import classes.Time;
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
