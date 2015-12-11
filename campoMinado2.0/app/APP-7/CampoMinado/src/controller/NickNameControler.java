@@ -18,18 +18,18 @@ import view.JDialogConTempo;
  */
 public class NickNameControler {
 
-    Jogador j;
     OperacaoNick operacao = new OperacaoNick();
+    Jogador j;
 
     public NickNameControler() {
         j = new Jogador();
     }
+
     public void salvarNick(String nick) {
 
         int tempo = JOptionPane.showConfirmDialog(null, "Deseja jogar com tempo limite ?!", "Tempo!", JOptionPane.YES_NO_OPTION);
         if (tempo == JOptionPane.YES_OPTION) {
             operacao.salvarNickTempo(j, nick);
-
         } else {
             operacao.salvarNick(j, nick);
         }

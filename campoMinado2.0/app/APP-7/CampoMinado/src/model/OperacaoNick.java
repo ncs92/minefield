@@ -7,10 +7,6 @@ package model;
 
 import view.JDialogConTempo;
 
-/**
- *
- * @author Maa - PC
- */
 public class OperacaoNick {
 
     public void salvarNickTempo(Jogador j, String nick) {

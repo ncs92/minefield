@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import controller.NickNameControler;
@@ -84,24 +79,6 @@ public class Nickname extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        String nome = jTextFieldname.getText();
-
-//        Jogador j = new Jogador();
-//        int tempo = JOptionPane.showConfirmDialog(null, "Deseja jogar com tempo limite ?!", "Tempo!", JOptionPane.YES_NO_OPTION);
-//        if (tempo == JOptionPane.YES_OPTION) {
-//            new JDialogConTempo(null, true).setVisible(true);
-//            Time t = (Time) Global.getObjeto();
-//            j.setTempo(t);
-//            j.setNome(nome);
-//            Global.setObjeto(null);
-//            Global.setObjeto(j);
-//        } else {
-//            j.setNome(nome);
-//            j.setTempo(null);
-//            Global.setObjeto(j);
-//
-//        }
-        
         controllerNick.salvarNick(jTextFieldname.getText());
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
