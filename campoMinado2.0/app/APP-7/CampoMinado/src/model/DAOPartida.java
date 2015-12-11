@@ -5,14 +5,16 @@
  */
 package model;
 
+import javax.persistence.EntityManager;
+
 /**
  *
  * @author nani
  */
-public class DAOPartida extends DAOGeneric{
+public class DAOPartida extends DAOGeneric<Partida>{
 
-    public DAOPartida(Class clazz) {
-        super(clazz);
+    public DAOPartida(EntityManager entityManager) {
+        super(entityManager);
     }
     
 }
