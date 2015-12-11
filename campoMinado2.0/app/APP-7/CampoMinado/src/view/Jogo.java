@@ -61,7 +61,6 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private final ArrayList<String> abertos = new ArrayList<>();
     private int contador;
     private boolean executaTempo;
-
     private JogoController controllerJogo;
 
     public Jogo(java.awt.Frame parent, boolean modal) throws IOException, URISyntaxException {
@@ -69,7 +68,6 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         initComponents();
         this.getContentPane().setBackground(Color.getHSBColor(34, 100, 34));
         this.setLocationRelativeTo(null);
-
         controllerJogo = new JogoController();
 
         criaCampo(p.getCampo().getTamanho());
@@ -302,7 +300,8 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButtonDicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDicaActionPerformed
-        dica();
+//        dica();
+        controllerJogo.getDicas(pontos, dica, totalClicado, posZero, posBombas, abertos, p, campo, mapa);
     }//GEN-LAST:event_jButtonDicaActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -407,7 +406,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private javax.swing.JTextField jTextFieldTime;
     // End of variables declaration//GEN-END:variables
 
-    public void criaCampo(int tam) throws IOException, URISyntaxException { //só desenha interface
+    public void criaCampo(int tam) throws IOException, URISyntaxException {
 
         campo = new JButton[tam][tam];
 
@@ -450,56 +449,14 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         al = new MouseAdapter() {
             public void actionPerformed(ActionEvent e) {
             }
-
-            
-           private void sorteio(){
-            controllerJogo.getSorteio(cont, posZero, campo, posBombas, abertos, tam);
+            private void sorteio() {
+                controllerJogo.getSorteio(cont, posZero, campo, posBombas, abertos, tam);
             }
 
-//            controllerJogo.getSorteio (int cont, ArrayList<> );
-//
-//            private void sorteio() {
-//                Random gerador = new Random();
-//                cont += posZero.size();
-//                Font fonte = new Font("Serif", Font.BOLD, 20);
-//                for (int k = 0; k < posZero.size(); k++) {
-//                    int i = Integer.parseInt(posZero.get(k).split(" ")[0]);
-//                    int j = Integer.parseInt(posZero.get(k).split(" ")[1]);
-//                    campo[i][j].setOpaque(false);
-//                    campo[i][j].setBorderPainted(false);
-//                    campo[i][j].setContentAreaFilled(false);
-//                    String posicao = String.valueOf(i) + String.valueOf(j);
-//                    abertos.add(posicao);
-//                }
-//                double abrir = tam * 0.20;
-//                while (abrir > 0) {
-//                    int i = gerador.nextInt(tam - 1);
-//                    int j = gerador.nextInt(tam - 1);
-//                    String aux = String.valueOf(i) + String.valueOf(j);
-//                    if (!posZero.contains(aux) && !abertos.contains(aux) && !posBombas.contains(aux)) {
-//                        abrir--;
-//                        campo[i][j].setOpaque(false);
-//                        campo[i][j].setBorderPainted(false);
-//                        campo[i][j].setFont(fonte);
-//                        campo[i][j].setContentAreaFilled(false);
-//                        campo[i][j].setText(campo[i][j].getName());
-//                        campo[i][j].setForeground(Color.red);
-//                        campo[i][j].setEnabled(false);
-//                        abertos.add(aux);
-//                    }
-//                }
-//            }
-
-//            private boolean ehVazio(int i, int j) {
-//                for (int k = 0; k < posZero.size(); k++) {
-//                    int l = Integer.parseInt(posZero.get(k).split(" ")[0]);
-//                    int m = Integer.parseInt(posZero.get(k).split(" ")[1]);
-//                    if (i == l && m == j) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
+            private boolean ehVazio(int i, int j) {
+               return controllerJogo.getVazio(i, j, posZero);
+            }
+            
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
@@ -510,10 +467,12 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
                     System.out.println("\n cont :" + cont);
                     Font fonte = new Font("Serif", Font.BOLD, 20);
-//                JButton botaoClicado = (JButton) e.getSource();
+
                     //////////////////////Clicou nas bombas ////////////////////
+                    
                     if (botaoClicado.getIcon() == null && botaoClicado.isEnabled()) {
                         System.out.println("\n Botao name :" + botaoClicado.getName());
+                        
                         if (botaoClicado.getName().equals("0")) {
                             for (int k = 0; k < posBombas.size(); k++) {
                                 int i = Integer.parseInt(posBombas.get(k).split(" ")[0]);
@@ -568,6 +527,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
                             }
                         } else { ///// caso nao tenha clicado numa bomba entra nesse else
+                            
                             if (cont == 0) { /// caso seja o primeiro a clicar entra nesse
                                 int i = 0, j = 0;
                                 for (int k = 0; k < posZero.size(); k++) {
@@ -579,8 +539,8 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                                 }
                                 sorteio();
                                 cont++;
-
                             }
+                            
                             if (botaoClicado.getName().equals("99")) {
                                 botaoClicado.setOpaque(false);
                                 botaoClicado.setBorderPainted(false);
@@ -613,7 +573,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         ArrayList<Partida> lista = (ArrayList) dao.list();
                         if (lista.isEmpty()) {
                             dao.insert(p);
-
+                            
                         } else {
                             if (p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()) {
                                 lista.add(p);
@@ -632,7 +592,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                             dispose();
                         }
                     }
-                }  //acabou mouse 1
+                }
 
                 if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                     if (botaoClicado.isEnabled()) {
@@ -666,76 +626,16 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
             }
 
         };
-        // for onde os botoes chaman o Mouse adapter 
-        for (int i = 0; i < tam; i++) {
-            for (int j = 0; j < tam; j++) {
-                campo[i][j].addMouseListener(al);
+        controllerJogo.inicializaMouseMatriz(tam, campo, al);
 
-            }
-        }
+        /*GERA AS BOMBAS*/
+        controllerJogo.bombas(quantidadeBombas, posBombas, tam, campo);
+        
+        /*ESCOLHE O MAPA*/        
+        controllerJogo.montaMapa(p, quantidadeMapa, tam, campo, mapa);
 
-        //////////////////////GERA AS BOMBAS////////////////////////////////
-        geraBomba();
-
-        ////////////////////////////////////////////////////////////////////
-        ////////////////////////////////ESCOLHE O MAPA//////////////////////////////////////        
-        escolheMapa();
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////COLOCA O VALOR DOS BOTOES//////////////////////////////////////////////////
-        colocaValorNosBotoes();
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // System.out.println("\n zero "+posZero.get(0).toString());
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void dica() {
-        pontos -= 10;
-        ArrayList<String> lista = new ArrayList<String>();
-        Font fonte = new Font("Serif", Font.BOLD, 20);
-        int i = 0, j = 0;
-        String posicao;
-        if (dica < 10) {
-            totalClicado++;
-            boolean continuar = true;
-            Random gerador = new Random();
-            while (continuar == true) {
-                i = gerador.nextInt(p.getCampo().getTamanho() - 1);
-                j = gerador.nextInt(p.getCampo().getTamanho() - 1);
-                posicao = String.valueOf(i) + String.valueOf(j);
-                if (posZero.contains(posicao)) {
-                    continuar = true;
-                } else if (posBombas.contains(posicao)) {
-                    continuar = true;
-                } else if (abertos.contains(posicao)) {
-                    continuar = true;
-                } else if (mapa.contains(posicao)) {
-
-                    continuar = true;
-                } else if (campo[i][j].getName().equals("0") || campo[i][j].getName().equals("99") || campo[i][j].getIcon() != null) {
-                    continuar = true;
-                } else {
-
-                    continuar = false;
-                    dica++;
-                }
-
-            }
-            campo[i][j].setOpaque(false);
-            campo[i][j].setBorderPainted(false);
-            campo[i][j].setContentAreaFilled(false);
-            campo[i][j].setFont(fonte);
-            campo[i][j].setContentAreaFilled(false);
-            campo[i][j].setText(campo[i][j].getName());
-            campo[i][j].setForeground(Color.red);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Você excedeu a quantidade de dicas!", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
+        /*COLOCA O VALOR DOS BOTOES*/
+        controllerJogo.inicializaBotoes(tam, campo, posZero);
     }
 
     private void tempo() {
@@ -765,351 +665,10 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         Global.setObjeto(null);
     }
 
-    private void geraBomba() {
-        System.out.println("\n eeeeeeeeeeeeeeeee");
-        for (int k = 0; k < quantidadeBombas; k++) {
-            int i = 0, j = 0;
-            String aux = "";
-            if (posBombas.isEmpty()) {
-                Random gerador = new Random();
-                i = gerador.nextInt(tam - 1);
-                j = gerador.nextInt(tam - 1);
-                aux = String.valueOf(i) + " " + String.valueOf(j);
-                campo[i][j].setName("0");
-                posBombas.add(aux);
-                System.out.println(i + " " + j);
-            } else {
-                while (posBombas.contains(aux) || aux.equals("")) {
-                    Random gerador = new Random();
-                    i = gerador.nextInt(tam - 1);
-                    j = gerador.nextInt(tam - 1);
-                    aux = String.valueOf(i) + " " + String.valueOf(j);
-                }
-                campo[i][j].setName("0");
-                posBombas.add(aux);
-                System.out.println(i + " " + j);
-            }
-        }
-        jLabelTotalB.setText(String.valueOf(posBombas.size()));
-        System.out.println(posBombas.toString());
-    }
-
-    private void escolheMapa() {
-        if (!p.getCampo().getMapa().equals("Normal")) {
-
-            for (int k = 0; k < quantidadeMapa; k++) {
-                while (true) {
-                    Random gerador = new Random();
-                    int i = gerador.nextInt(tam - 1);
-                    int j = gerador.nextInt(tam - 1);
-                    String posicao = String.valueOf(i) + String.valueOf(j);
-                    if (!campo[i][j].getName().equals("0")) {
-                        if (p.getCampo().getMapa().equals("Floresta")) {
-                            if (tam == 4) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-flor.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 8) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-flor.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 16) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-flor.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-flor.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            }
-                        } else if (p.getCampo().getMapa().equals("Cidade")) {
-                            if (tam == 4) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-home.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 8) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-home.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 16) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-home.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-home.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            }
-                        } else if (p.getCampo().getMapa().equals("Pedreira")) {
-                            if (tam == 4) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-parede.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 8) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-parede.png"));
-//                                ImageIcon icon = new ImageIcon("/Users/nani/Desktop/APP/CampoMinado/src/img/8x8-parede.png");
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else if (tam == 16) {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-parede.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            } else {
-                                ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-parede.png"));
-                                campo[i][j].setIcon(icon);
-                                campo[i][j].setName("1");
-                                campo[i][j].setEnabled(false);
-                                mapa.add(posicao);
-                                break;
-                            }
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-
-    private void colocaValorNosBotoes() {
-        for (int i = 0; i < tam; i++) {///////////////// PERCORRE O TABULEIRO ////////////////////////
-            for (int j = 0; j < tam; j++) { //////////// PERCORRE O TABULEIRO /////////////////
-                //    System.out.println("i :"+i);
-                //      System.out.println("j :"+j);
-                if (!campo[i][j].getName().equals("0") && !campo[i][j].getName().equals("1")) {/////////////////SO VERIFICA O VALOR SE NAO FOR UMA BOMBA ///////
-                    int bomba = 0; /// QUANTIDADE DE BOMBAS AO REDOR ////
-                    /////////////// VERIFICA A PRIMEIRA LINHA DA TABELA ///////////// 
-                    if (i == 0) { // as bordas da matriz
-                        if (j == 0) {
-                            if (campo[i][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            //    System.out.println("\n bbb "+bomba);
-                        } else if (j == tam - 1) {
-
-                            if (campo[i][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                        } else {
-                            if (campo[i][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i + 1][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                        }
-                    } /////////////////////////////////////////////////////////////////
-                    ////////////////////////VERIFICA A ULTIMA LINHA DA TABELA ///////////////////////////////
-                    else if (i == tam - 1) { // as bordas da matriz
-                        if (j == 0) {
-                            if (campo[i][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                        } else if (j == tam - 1) {
-
-                            if (campo[i][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                        } else {
-                            if (campo[i][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j - 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                            if (campo[i - 1][j + 1].getName().equals("0")) {
-                                bomba++;
-                            }
-                        }
-                    }
-                    ////////////////////////////////////////////////////////////////////////
-                    ///////////////////////////VERIFICA A PRIMEIRA COLUNA DA TABELA///////////////////////////
-                    if (j == 0 && i != 0 && i != tam - 1) {
-                        if (campo[i][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                    } /////////////////////////////////////////////////////////////////////
-                    ///////////////////////////VERIFICA A ULTIMA COLUNA DA TABELA////////////////////////////////
-                    else if (j == tam - 1 && i != 0 && i != tam - 1) {
-
-                        if (campo[i][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        //   System.out.println("i-1 :"+(i-1));
-                        if (campo[i - 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                    }
-                    ////////////////////////////////////////////////////////////////////
-                    /////////////////////////////VERIFICA CASOS NORMAIS///////////////////////////////////
-                    if (!(i == 0 || i == tam - 1 || j == 0 || j == tam - 1)) {
-                        if (campo[i][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i - 1][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j - 1].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j].getName().equals("0")) {
-                            bomba++;
-                        }
-                        if (campo[i + 1][j + 1].getName().equals("0")) {
-                            bomba++;
-                        }
-
-                    }
-                    /////////////////////////////////////////////////////////////
-                    // System.out.println("bomba :"+bomba);
-                    //   campo.addActionListener(this);
-                    if (bomba == 0) {
-                        String aux = String.valueOf(i) + " " + String.valueOf(j);
-                        posZero.add(aux);
-                        campo[i][j].setName("99");
-                        System.out.println("\n" + i + " " + j + " Entrou");
-                    } else {
-                        campo[i][j].setForeground(Color.RED);
-                        campo[i][j].setName(String.valueOf(bomba));
-                    }
-
-                }
-            }
-        }
-
-        int total = 0;
-        if (campo[0][1].getName().equals("0")) {
-            total++;
-        }
-        if (campo[1][0].getName().equals("0")) {
-            total++;
-        }
-        if (campo[1][1].getName().equals("0")) {
-            total++;
-        }
-        if (total != 0) {
-            campo[0][0].setName(String.valueOf(total));
-        } else {
-            String aux = String.valueOf(0) + " " + String.valueOf(0);
-            campo[0][0].setName(String.valueOf("99"));
-            posZero.add(aux);
-        }
-        System.out.println("\n -------------- pos --------------");
-        for (int i = 0; i < campo.length; i++) {
-            for (int j = 0; j < campo.length; j++) {
-                System.out.println("\n ------");
-                System.out.println("\n " + i + " " + " " + j + " : " + campo[i][j].getName());
-            }
-        }
-        System.out.println("\n -----------------");
-        System.out.println("\n --------------- Bombas ---------------");
-        System.out.println(posBombas.toString());
-        System.out.println("\n ----------------------------------------------");
-        System.out.println("\n ------------------ vazio -------------------------");
-        System.out.println(posZero.toString());
-        System.out.println("\n ----------------------------------------------");
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
+//testando
