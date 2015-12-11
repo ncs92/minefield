@@ -44,9 +44,10 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private JButton campo[][];
     private int cont = 0;
     private int contA = 0;
+    private   int tam = p.getCampo().getTamanho();
     private int qtdBandeira = 0;
     private int totalClicado = 0;
-    private double quantidadeBombas = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.30;
+    private double quantidadeBombas = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private double quantidadeMapa = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private int qtdJogo = 0;
     private int dica = 0;
@@ -65,7 +66,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         // FundoBg f = new FundoBg("src/img/mapa.jpg");
 
         criaCampo(p.getCampo().getTamanho());
-
+       
         executaTempo = true;
         if (p.getJogador().getTempo() != null) {
             int min = p.getJogador().getTempo().getMinutos();
@@ -489,73 +490,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
                 ///////////////////////////
 
-                Font fonte = new Font("Serif", Font.BOLD, 20);
-                JButton botaoClicado = (JButton) e.getSource();
-                //////////////////////Clicou nas bombas ////////////////////
-                if (botaoClicado.getName().equals("0")) {
-                    for (int k = 0; k < posBombas.size(); k++) {
-                        int i = Integer.parseInt(posBombas.get(k).split(" ")[0]);
-                        int j = Integer.parseInt(posBombas.get(k).split(" ")[1]);
-
-                        if (tam == 4) {
-                            ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
-                            campo[i][j].setIcon(icon);
-                        } else if (tam == 8) {
-                            ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
-                            campo[i][j].setIcon(icon);
-                        } else if (tam == 16) {
-                            ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
-                            campo[i][j].setIcon(icon);
-                        } else {
-                            ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
-                            campo[i][j].setIcon(icon);
-                        }
-                        campo[i][j].setOpaque(false);
-                        campo[i][j].setBorderPainted(false);
-                        campo[i][j].setContentAreaFilled(false);
-                    }
-
-                    //////////////////////////////////////////////////////voce perdeu
-                    int op = JOptionPane.showConfirmDialog(null, "Você perdeu! Deseja continuar no jogo ?", "You Can Do It!!", JOptionPane.YES_NO_OPTION);
-                    if (op == JOptionPane.YES_OPTION) {
-                        executaTempo = false;
-                        dispose();
-                        new Principal(null, true).setVisible(true);
-                    } else {
-                        System.exit(0);
-
-                    }
-                } else { ///// caso nao tenha clicado numa bomba entra nesse else
-                    if (cont == 0) { /// caso seja o primeiro a clicar entra nesse
-                        int i = 0, j = 0;
-                        for (int k = 0; k < posZero.size(); k++) {
-                            i = Integer.parseInt(posZero.get(k).split(" ")[0]);
-                            j = Integer.parseInt(posZero.get(k).split(" ")[1]);
-                            campo[i][j].setOpaque(false);
-                            campo[i][j].setBorderPainted(false);
-                            campo[i][j].setContentAreaFilled(false);
-                        }
-
-                        sorteio();
-
-                    }
-                    if (botaoClicado.getName().equals("99")) {
-                        botaoClicado.setOpaque(false);
-                        botaoClicado.setBorderPainted(false);
-                        botaoClicado.setContentAreaFilled(false);
-                        botaoClicado.setEnabled(false);
-
-                    } else {
-                        botaoClicado.setOpaque(false);
-                        botaoClicado.setBorderPainted(false);
-                        botaoClicado.setFont(fonte);
-                        botaoClicado.setContentAreaFilled(false);
-                        botaoClicado.setText(botaoClicado.getName());
-                        botaoClicado.setForeground(Color.red);
-                        botaoClicado.setEnabled(false);
-                    }
-
-                }
+              
 
             }
 
@@ -610,7 +545,8 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                     Font fonte = new Font("Serif", Font.BOLD, 20);
 //                JButton botaoClicado = (JButton) e.getSource();
                     //////////////////////Clicou nas bombas ////////////////////
-                    if (botaoClicado.getIcon() == null) {
+                    if (botaoClicado.getIcon() == null && botaoClicado.isEnabled()) {
+                        System.out.println("\n Botao name :" + botaoClicado.getName());
                         if (botaoClicado.getName().equals("0")) {
                             for (int k = 0; k < posBombas.size(); k++) {
                                 int i = Integer.parseInt(posBombas.get(k).split(" ")[0]);
@@ -618,36 +554,36 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
                                 if (tam == 4) {
                                     ImageIcon icon;
-                                    if(campo[i][j].getIcon() == null){
-                                     icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
-                                    }else{
-                                     icon = new ImageIcon(getClass().getResource("/img/flagB4.png"));
+                                    if (campo[i][j].getIcon() == null) {
+                                        icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
+                                    } else {
+                                        icon = new ImageIcon(getClass().getResource("/img/flagB4.png"));
                                     }
-                                    campo[i][j].setIcon(icon);                                        
+                                    campo[i][j].setIcon(icon);
                                 } else if (tam == 8) {
-                                     ImageIcon icon;
-                                    if(campo[i][j].getIcon() == null){
-                                     icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
-                                    }else{
-                                     icon = new ImageIcon(getClass().getResource("/img/flagB3.png"));
+                                    ImageIcon icon;
+                                    if (campo[i][j].getIcon() == null) {
+                                        icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
+                                    } else {
+                                        icon = new ImageIcon(getClass().getResource("/img/flagB3.png"));
                                     }
-                                    campo[i][j].setIcon(icon); 
+                                    campo[i][j].setIcon(icon);
                                 } else if (tam == 16) {
-                                     ImageIcon icon;
-                                    if(campo[i][j].getIcon() == null){
-                                     icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
-                                    }else{
-                                     icon = new ImageIcon(getClass().getResource("/img/flagB2.png"));
+                                    ImageIcon icon;
+                                    if (campo[i][j].getIcon() == null) {
+                                        icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
+                                    } else {
+                                        icon = new ImageIcon(getClass().getResource("/img/flagB2.png"));
                                     }
-                                    campo[i][j].setIcon(icon); 
+                                    campo[i][j].setIcon(icon);
                                 } else {
-                                     ImageIcon icon;
-                                    if(campo[i][j].getIcon() == null){
-                                     icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
-                                    }else{
-                                     icon = new ImageIcon(getClass().getResource("/img/flagB.png"));
+                                    ImageIcon icon;
+                                    if (campo[i][j].getIcon() == null) {
+                                        icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
+                                    } else {
+                                        icon = new ImageIcon(getClass().getResource("/img/flagB.png"));
                                     }
-                                    campo[i][j].setIcon(icon); 
+                                    campo[i][j].setIcon(icon);
                                 }
                                 campo[i][j].setOpaque(false);
                                 campo[i][j].setBorderPainted(false);
@@ -699,34 +635,36 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
 
                 if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
-                    ImageIcon icon;
-                    if (botaoClicado.getIcon() == null ) {
-                        
-                    if(qtdBandeira < (int)quantidadeBombas){
-                         qtdBandeira +=1;
-                         cont++;
-                        if (tam == 4) {
-                            icon = new ImageIcon(getClass().getResource("/img/flag4.png"));
-                        } else if (tam == 8) {
-                            icon = new ImageIcon(getClass().getResource("/img/flag3.png"));
-                        } else if (tam == 16) {
-                            icon = new ImageIcon(getClass().getResource("/img/flag2.png"));
+                    if (botaoClicado.isEnabled()) {
+                        ImageIcon icon;
+                        if (botaoClicado.getIcon() == null) {
+
+                            if (qtdBandeira < (int) quantidadeBombas) {
+                                qtdBandeira += 1;
+                                cont++;
+                                if (tam == 4) {
+                                    icon = new ImageIcon(getClass().getResource("/img/flag4.png"));
+                                } else if (tam == 8) {
+                                    icon = new ImageIcon(getClass().getResource("/img/flag3.png"));
+                                } else if (tam == 16) {
+                                    icon = new ImageIcon(getClass().getResource("/img/flag2.png"));
+                                } else {
+                                    icon = new ImageIcon(getClass().getResource("/img/flag.png"));
+                                }
+                                botaoClicado.setIcon(icon);
+                            }
                         } else {
-                            icon = new ImageIcon(getClass().getResource("/img/flag.png"));
+                            qtdBandeira -= 1;
+                            botaoClicado.setIcon(null);
                         }
-                        botaoClicado.setIcon(icon);
+                        jLabelBomba.setText(String.valueOf(qtdBandeira));
                     }
-                    } else {
-                         qtdBandeira -=1;
-                        botaoClicado.setIcon(null);
-                    }
-                    jLabelBomba.setText(String.valueOf(qtdBandeira));
-                
                 }
-                
+
             }
 
         };
+       // for onde os botoes chaman o Mouse adapter 
         for (int i = 0; i < tam; i++) {
             for (int j = 0; j < tam; j++) {
                 campo[i][j].addMouseListener(al);
@@ -735,6 +673,105 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         }
 
         //////////////////////GERA AS BOMBAS////////////////////////////////
+        geraBomba();
+
+        ////////////////////////////////////////////////////////////////////
+        ////////////////////////////////ESCOLHE O MAPA//////////////////////////////////////        
+        escolheMapa();
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////COLOCA O VALOR DOS BOTOES//////////////////////////////////////////////////
+        colocaValorNosBotoes();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void dica() {
+        ArrayList<String> lista = new ArrayList<String>();
+        Font fonte = new Font("Serif", Font.BOLD, 20);
+        int i = 0, j = 0;
+        String posicao;
+        if (dica < 10) {
+            totalClicado++;
+            boolean continuar = true;
+            Random gerador = new Random();
+            while (continuar == true) {
+                i = gerador.nextInt(p.getCampo().getTamanho() - 1);
+                j = gerador.nextInt(p.getCampo().getTamanho() - 1);
+                posicao = String.valueOf(i) + String.valueOf(j);
+                if (posZero.contains(posicao)) {
+                    continuar = true;
+                } else if (posBombas.contains(posicao)) {
+                    continuar = true;
+                } else if (abertos.contains(posicao)) {
+                    continuar = true;
+                } else if (mapa.contains(posicao)) {
+
+                    continuar = true;
+                } else if (campo[i][j].getName().equals("0") || campo[i][j].getName().equals("99")) {
+                    continuar = true;
+                } else {
+
+                    continuar = false;
+                    dica++;
+                }
+
+            }
+            campo[i][j].setOpaque(false);
+            campo[i][j].setBorderPainted(false);
+            campo[i][j].setContentAreaFilled(false);
+            campo[i][j].setFont(fonte);
+            campo[i][j].setContentAreaFilled(false);
+            campo[i][j].setText(campo[i][j].getName());
+            campo[i][j].setForeground(Color.red);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Você excedeu a quantidade de dicas!", "Alerta", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void tempo() {//    metodo com probblema
+        //    new JDialogConTempo(null, true).setVisible(true);
+
+        jTextFieldTime.setForeground(Color.red);
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+
+                    while (executaTempo && contador > 0) {
+                        int minutos = contador / 60;
+                        int segundos = contador % 60;
+                        jTextFieldTime.setText(" " + String.valueOf(minutos) + ":" + String.valueOf(segundos));
+                        Thread.sleep(1000); // 1 segundo 
+//                        System.out.println("executando contador : " + contador);
+                        contador--;
+                        if (minutos == 0 && segundos == 0) {
+                            JOptionPane.showMessageDialog(null, "Você excedeu a quantidade de tempo!", "Alerta", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+
+                    }
+
+                } catch (InterruptedException e) {
+                    System.out.println("Interromperam meu sono!");
+                }
+
+            }
+
+        });
+        thread.start();
+
+        Global.setObjeto(null);
+
+    }
+
+    private void geraBomba() {
         for (int k = 0; k < quantidadeBombas; k++) {
             int i = 0, j = 0;
             String aux = "";
@@ -758,11 +795,10 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         }
         jLabelTotalB.setText(String.valueOf(posBombas.size()));
         System.out.println(posBombas.toString());
-        
-        ////////////////////////////////////////////////////////////////////
+    }
 
-        ////////////////////////////////ESCOLHE O MAPA//////////////////////////////////////        
-        if (!p.getCampo().getMapa().equals("Normal")) {
+    private void escolheMapa() {
+          if (!p.getCampo().getMapa().equals("Normal")) {
 
             for (int k = 0; k < quantidadeMapa; k++) {
                 while (true) {
@@ -868,9 +904,9 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
             }
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////
+    }
 
-        ////////////////////////COLOCA O VALOR DOS BOTOES//////////////////////////////////////////////////
+    private void colocaValorNosBotoes() {
         for (int i = 0; i < tam; i++) {///////////////// PERCORRE O TABULEIRO ////////////////////////
             for (int j = 0; j < tam; j++) { //////////// PERCORRE O TABULEIRO /////////////////
                 //    System.out.println("i :"+i);
@@ -1042,93 +1078,6 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
             }
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void dica() {
-        ArrayList<String> lista = new ArrayList<String>();
-        Font fonte = new Font("Serif", Font.BOLD, 20);
-        int i = 0, j = 0;
-        String posicao;
-        if (dica < 10) {
-            totalClicado++;
-            boolean continuar = true;
-            Random gerador = new Random();
-            while (continuar == true) {
-                i = gerador.nextInt(p.getCampo().getTamanho() - 1);
-                j = gerador.nextInt(p.getCampo().getTamanho() - 1);
-                posicao = String.valueOf(i) + String.valueOf(j);
-                if (posZero.contains(posicao)) {
-                    continuar = true;
-                } else if (posBombas.contains(posicao)) {
-                    continuar = true;
-                } else if (abertos.contains(posicao)) {
-                    continuar = true;
-                } else if (mapa.contains(posicao)) {
-
-                    continuar = true;
-                } else if (campo[i][j].getName().equals("0") || campo[i][j].getName().equals("99")) {
-                    continuar = true;
-                } else {
-
-                    continuar = false;
-                    dica++;
-                }
-
-            }
-            campo[i][j].setOpaque(false);
-            campo[i][j].setBorderPainted(false);
-            campo[i][j].setContentAreaFilled(false);
-            campo[i][j].setFont(fonte);
-            campo[i][j].setContentAreaFilled(false);
-            campo[i][j].setText(campo[i][j].getName());
-            campo[i][j].setForeground(Color.red);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Você excedeu a quantidade de dicas!", "Alerta", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void tempo() {//    metodo com probblema
-        //    new JDialogConTempo(null, true).setVisible(true);
-
-        jTextFieldTime.setForeground(Color.red);
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-
-                    while (executaTempo && contador > 0) {
-                        int minutos = contador / 60;
-                        int segundos = contador % 60;
-                        jTextFieldTime.setText(" " + String.valueOf(minutos) + ":" + String.valueOf(segundos));
-                        Thread.sleep(1000); // 1 segundo 
-//                        System.out.println("executando contador : " + contador);
-                        contador--;
-                        if (minutos == 0 && segundos == 0) {
-                            JOptionPane.showMessageDialog(null, "Você excedeu a quantidade de tempo!", "Alerta", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        }
-
-                    }
-
-                } catch (InterruptedException e) {
-                    System.out.println("Interromperam meu sono!");
-                }
-
-            }
-
-        });
-        thread.start();
-
-        Global.setObjeto(null);
-
     }
 
 }
