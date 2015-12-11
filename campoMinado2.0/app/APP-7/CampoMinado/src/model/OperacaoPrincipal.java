@@ -15,9 +15,7 @@ public class OperacaoPrincipal {
 
     private Partida p;
     private Jogador j;
-    private Campo c;
-
-    
+    private Campo c;    
     
     public void inicializarParatida(String mapa, int tamanho){
         p = new Partida();
