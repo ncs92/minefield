@@ -617,17 +617,37 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                                 int j = Integer.parseInt(posBombas.get(k).split(" ")[1]);
 
                                 if (tam == 4) {
-                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
-                                    campo[i][j].setIcon(icon);
+                                    ImageIcon icon;
+                                    if(campo[i][j].getIcon() == null){
+                                     icon = new ImageIcon(getClass().getResource("/img/4x4-bomb.png"));
+                                    }else{
+                                     icon = new ImageIcon(getClass().getResource("/img/flagB4.png"));
+                                    }
+                                    campo[i][j].setIcon(icon);                                        
                                 } else if (tam == 8) {
-                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
-                                    campo[i][j].setIcon(icon);
+                                     ImageIcon icon;
+                                    if(campo[i][j].getIcon() == null){
+                                     icon = new ImageIcon(getClass().getResource("/img/8x8-bomb.png"));
+                                    }else{
+                                     icon = new ImageIcon(getClass().getResource("/img/flagB3.png"));
+                                    }
+                                    campo[i][j].setIcon(icon); 
                                 } else if (tam == 16) {
-                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
-                                    campo[i][j].setIcon(icon);
+                                     ImageIcon icon;
+                                    if(campo[i][j].getIcon() == null){
+                                     icon = new ImageIcon(getClass().getResource("/img/16x16-bomb.png"));
+                                    }else{
+                                     icon = new ImageIcon(getClass().getResource("/img/flagB2.png"));
+                                    }
+                                    campo[i][j].setIcon(icon); 
                                 } else {
-                                    ImageIcon icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
-                                    campo[i][j].setIcon(icon);
+                                     ImageIcon icon;
+                                    if(campo[i][j].getIcon() == null){
+                                     icon = new ImageIcon(getClass().getResource("/img/perso-bomb.png"));
+                                    }else{
+                                     icon = new ImageIcon(getClass().getResource("/img/flagB.png"));
+                                    }
+                                    campo[i][j].setIcon(icon); 
                                 }
                                 campo[i][j].setOpaque(false);
                                 campo[i][j].setBorderPainted(false);
