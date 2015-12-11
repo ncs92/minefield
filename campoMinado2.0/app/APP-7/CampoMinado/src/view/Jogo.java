@@ -46,7 +46,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private int contA = 0;
     private int qtdBandeira = 0;
     private int totalClicado = 0;
-    private double quantidadeBombas = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.40;
+    private double quantidadeBombas = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.30;
     private double quantidadeMapa = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private int qtdJogo = 0;
     private int dica = 0;
@@ -680,7 +680,9 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
                 if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                     ImageIcon icon;
-                    if (botaoClicado.getIcon() == null) {
+                    if (botaoClicado.getIcon() == null ) {
+                        
+                    if(qtdBandeira < (int)quantidadeBombas){
                          qtdBandeira +=1;
                          cont++;
                         if (tam == 4) {
@@ -693,13 +695,15 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                             icon = new ImageIcon(getClass().getResource("/img/flag.png"));
                         }
                         botaoClicado.setIcon(icon);
+                    }
                     } else {
                          qtdBandeira -=1;
                         botaoClicado.setIcon(null);
                     }
                     jLabelBomba.setText(String.valueOf(qtdBandeira));
+                
                 }
-
+                
             }
 
         };
@@ -711,15 +715,30 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         }
 
         //////////////////////GERA AS BOMBAS////////////////////////////////
-        jLabelTotalB.setText(String.valueOf((int)quantidadeBombas));
         for (int k = 0; k < quantidadeBombas; k++) {
-            Random gerador = new Random();
-            int i = gerador.nextInt(tam - 1);
-            int j = gerador.nextInt(tam - 1);
-            campo[i][j].setName("0");
-            String aux = String.valueOf(i) + " " + String.valueOf(j);
-            posBombas.add(aux);
+            int i = 0, j = 0;
+            String aux = "";
+            if (posBombas.isEmpty()) {
+                Random gerador = new Random();
+                i = gerador.nextInt(tam - 1);
+                j = gerador.nextInt(tam - 1);
+                aux = String.valueOf(i) + " " + String.valueOf(j);
+                campo[i][j].setName("0");
+                posBombas.add(aux);
+            } else {
+                while (posBombas.contains(aux) || aux.equals("")) {
+                    Random gerador = new Random();
+                    i = gerador.nextInt(tam - 1);
+                    j = gerador.nextInt(tam - 1);
+                    aux = String.valueOf(i) + " " + String.valueOf(j);
+                }
+                campo[i][j].setName("0");
+                posBombas.add(aux);
+            }
         }
+        jLabelTotalB.setText(String.valueOf(posBombas.size()));
+        System.out.println(posBombas.toString());
+        
         ////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////ESCOLHE O MAPA//////////////////////////////////////        
