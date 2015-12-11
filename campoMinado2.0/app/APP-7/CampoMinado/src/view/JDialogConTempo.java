@@ -5,10 +5,8 @@
  */
 package view;
 
-<<<<<<< HEAD
-=======
 import controller.TempoController;
->>>>>>> refs/remotes/origin/master
+
 import model.Global;
 import model.Time;
 import java.awt.Color;

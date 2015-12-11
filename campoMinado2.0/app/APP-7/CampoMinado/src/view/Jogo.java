@@ -5,25 +5,12 @@
  */
 package view;
 
-<<<<<<< HEAD
-import model.DAOPartida;
-=======
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
+
 import model.Global;
 import model.Jogador;
 import model.Partida;
 import model.Time;
-<<<<<<< HEAD
-=======
-=======
-import classes.DAOPartida;
-import classes.Global;
-import classes.Jogador;
-import classes.Partida;
-import classes.Time;
->>>>>>> refs/remotes/origin/master
->>>>>>> refs/remotes/origin/master
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -46,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.DAOPartida;
 
 /**
  *
@@ -1111,7 +1099,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         if(total != 0){
         campo[0][0].setName(String.valueOf(total));            
         }else{
-            posZero.add("00")
+//            posZero.add("00")
         }
     }
 
