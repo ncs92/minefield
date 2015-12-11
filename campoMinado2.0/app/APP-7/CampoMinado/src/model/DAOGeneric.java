@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
-public class DAOGeneric<T> {
+public class DAOGeneric<Partida> {
 
     private static EntityManager em;
 
@@ -13,20 +13,20 @@ public class DAOGeneric<T> {
         em = entityM;
     }
 
-    public void insert(T entity) {
+    public void insert(Partida entity) {
         em.getTransaction().begin();
         em.persist(entity);
         em.getTransaction().commit();
         System.out.println("\n inseriuuu \n");
     }
 
-    public void update(T entity) {
+    public void update(Partida entity) {
         em.getTransaction().begin();
         em.merge(entity);
         em.getTransaction().commit();
     }
 
-    public void remove(T entity) {
+    public void remove(Partida entity) {
   
         em.getTransaction().begin();
         em.remove(entity);
@@ -39,7 +39,7 @@ public class DAOGeneric<T> {
         return clazz;
     }
 
-    public List<T> list() {
+    public List<Partida> list() {
         return em.createQuery("SELECT c FROM " + getTypeClass().getSimpleName() + " c").getResultList();
     }
     /* public List<T> listByTitulo(String titulo) {
