@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.DAOGeneric;
 import model.DAOPartida;
 
 /**
@@ -341,7 +342,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButtonVitoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVitoriasActionPerformed
-        DAOPartida dao = null;
+        DAOGeneric dao = null;
         ArrayList<Partida> lista = new ArrayList<>();
         lista = (ArrayList<Partida>) dao.list();
         String aux = String.valueOf(lista.get(0).getJogador().getNome() + " " + lista.get(0).getJogador().getPontuacao());
@@ -622,16 +623,20 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                     }
 
                     if (totalClicado == (tam * tam)) {
-                        DAOPartida dao = null;
+                        DAOGeneric dao = null;
                         p.getJogador().setPontuacao(pontos);
-                        ArrayList<Partida> lista = (ArrayList) dao.list();
+                        ArrayList<Partida> lista = null;
+                        System.out.println("\n dao :"+dao.list().toString());
+                        if(!dao.list().isEmpty()){                            
+                        lista = (ArrayList) dao.list();
+                        }
                         if (lista.isEmpty()) {
                             dao.insert(p);
                             
                         } else {
                             if (p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()) {
                                 lista.add(p);
-                                dao.update(lista);
+                                dao.update(p);
                             }
                         }
                         JOptionPane.showMessageDialog(null, pontos, "Pontuação!!", JOptionPane.OK_OPTION);
