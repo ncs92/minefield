@@ -42,19 +42,19 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private Partida p = (Partida) Global.getObjeto();
     private boolean acertouBomba = false;
     private JButton campo[][];
-    private int cont = 0;
+    private int cont = -1;
     private int contA = 0;
-    private   int tam = p.getCampo().getTamanho();
+    private int tam = p.getCampo().getTamanho();
     private int qtdBandeira = 0;
     private int totalClicado = 0;
     private double quantidadeBombas = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private double quantidadeMapa = (p.getCampo().getTamanho() * p.getCampo().getTamanho()) * 0.10;
     private int qtdJogo = 0;
     private int dica = 0;
-    private ArrayList<String> posBombas = new ArrayList<String>();
-    private ArrayList<String> posZero = new ArrayList<String>();
-    private ArrayList<String> mapa = new ArrayList<String>();
-    private ArrayList<String> abertos = new ArrayList<String>();
+    private final ArrayList<String> posBombas = new ArrayList<>();
+    private final ArrayList<String> posZero = new ArrayList<>();
+    private final ArrayList<String> mapa = new ArrayList<>();
+    private final ArrayList<String> abertos = new ArrayList<>();
     private int contador;
     private boolean executaTempo;
 
@@ -66,7 +66,12 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         // FundoBg f = new FundoBg("src/img/mapa.jpg");
 
         criaCampo(p.getCampo().getTamanho());
-       
+        /* for(int i = 0; i < campo.length; i++){
+         for(int j = 0; j < campo.length; j++){
+         System.out.println("\n ------");
+         System.out.println("\n "+i+" "+ " "+j+" : "+campo[i][j].getName());
+         }
+         }*/
         executaTempo = true;
         if (p.getJogador().getTempo() != null) {
             int min = p.getJogador().getTempo().getMinutos();
@@ -461,36 +466,12 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
     public void montaJogo(int tam) {
         JButton vet = new JButton();
-
+        
         MouseAdapter al;
         jLabel2.setText(p.getJogador().getNome());
 
         al = new MouseAdapter() {
             public void actionPerformed(ActionEvent e) {
-                cont++;
-                // verifica se ganhou
-
-                if (p.getCampo().getMapa().equals("Normal")) {
-                    totalClicado = posZero.size() + cont + posBombas.size();
-                } else {
-                    totalClicado = posZero.size() + cont + Integer.parseInt(String.valueOf(quantidadeMapa));
-                }
-                System.out.println("\n Total clicado :" + totalClicado);
-                System.out.println("\n Bombas :" + posBombas.size());
-                if (totalClicado == (tam * tam)) {
-                    int op = JOptionPane.showConfirmDialog(null, "Você ganhou!! Deseja ir para o proximo nivel ?!", "You Winnn!!!", JOptionPane.YES_NO_OPTION);
-                    if (op == JOptionPane.YES_OPTION) {
-                        dispose();
-                        new Principal(null, true).setVisible(false);
-
-                        // Global.setObjeto(p);
-                    } else {
-                        dispose();
-                    }
-                }
-                ///////////////////////////
-
-              
 
             }
 
@@ -541,7 +522,11 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                 JButton botaoClicado = (JButton) e.getSource();
+
                 if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
+                    cont++;
+
+                    System.out.println("\n cont :" + cont);
                     Font fonte = new Font("Serif", Font.BOLD, 20);
 //                JButton botaoClicado = (JButton) e.getSource();
                     //////////////////////Clicou nas bombas ////////////////////
@@ -610,8 +595,8 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                                     campo[i][j].setBorderPainted(false);
                                     campo[i][j].setContentAreaFilled(false);
                                 }
-
                                 sorteio();
+                                cont++;
 
                             }
                             if (botaoClicado.getName().equals("99")) {
@@ -630,6 +615,25 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                                 botaoClicado.setEnabled(false);
                             }
 
+                        }
+                    }
+                    if (p.getCampo().getMapa().equals("Normal")) {
+                        totalClicado = cont + posBombas.size();
+
+                    } else {
+                        totalClicado = cont + Integer.parseInt(String.valueOf(quantidadeMapa))+ posBombas.size();
+
+                    }
+
+                    if (totalClicado == (tam * tam)) {
+                        int op = JOptionPane.showConfirmDialog(null, "Você ganhou!! Deseja ir para o proximo nivel ?!", "You Winnn!!!", JOptionPane.YES_NO_OPTION);
+                        if (op == JOptionPane.YES_OPTION) {
+                            dispose();
+                            new Principal(null, true).setVisible(false);
+
+                            // Global.setObjeto(p);
+                        } else {
+                            dispose();
                         }
                     }
                 }
@@ -664,7 +668,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
             }
 
         };
-       // for onde os botoes chaman o Mouse adapter 
+        // for onde os botoes chaman o Mouse adapter 
         for (int i = 0; i < tam; i++) {
             for (int j = 0; j < tam; j++) {
                 campo[i][j].addMouseListener(al);
@@ -683,6 +687,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         ////////////////////////COLOCA O VALOR DOS BOTOES//////////////////////////////////////////////////
         colocaValorNosBotoes();
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
+       // System.out.println("\n zero "+posZero.get(0).toString());
     }
 
     @Override
@@ -712,7 +717,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 } else if (mapa.contains(posicao)) {
 
                     continuar = true;
-                } else if (campo[i][j].getName().equals("0") || campo[i][j].getName().equals("99")) {
+                } else if (campo[i][j].getName().equals("0") || campo[i][j].getName().equals("99") || campo[i][j].getIcon() != null) {
                     continuar = true;
                 } else {
 
@@ -772,6 +777,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }
 
     private void geraBomba() {
+        System.out.println("\n eeeeeeeeeeeeeeeee");
         for (int k = 0; k < quantidadeBombas; k++) {
             int i = 0, j = 0;
             String aux = "";
@@ -782,6 +788,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 aux = String.valueOf(i) + " " + String.valueOf(j);
                 campo[i][j].setName("0");
                 posBombas.add(aux);
+                System.out.println(i + " " + j);
             } else {
                 while (posBombas.contains(aux) || aux.equals("")) {
                     Random gerador = new Random();
@@ -791,6 +798,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
                 campo[i][j].setName("0");
                 posBombas.add(aux);
+                System.out.println(i + " " + j);
             }
         }
         jLabelTotalB.setText(String.valueOf(posBombas.size()));
@@ -798,7 +806,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }
 
     private void escolheMapa() {
-          if (!p.getCampo().getMapa().equals("Normal")) {
+        if (!p.getCampo().getMapa().equals("Normal")) {
 
             for (int k = 0; k < quantidadeMapa; k++) {
                 while (true) {
@@ -925,6 +933,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                             if (campo[i + 1][j + 1].getName().equals("0")) {
                                 bomba++;
                             }
+                            //    System.out.println("\n bbb "+bomba);
                         } else if (j == tam - 1) {
 
                             if (campo[i][j - 1].getName().equals("0")) {
@@ -1070,6 +1079,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         String aux = String.valueOf(i) + " " + String.valueOf(j);
                         posZero.add(aux);
                         campo[i][j].setName("99");
+
                     } else {
                         campo[i][j].setForeground(Color.RED);
                         campo[i][j].setName(String.valueOf(bomba));
