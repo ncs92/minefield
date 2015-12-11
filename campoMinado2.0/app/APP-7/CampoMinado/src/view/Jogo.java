@@ -627,6 +627,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         ArrayList<Partida> lista = (ArrayList) dao.list();
                         if (lista.isEmpty()) {
                             dao.insert(p);
+                            
                         } else {
                             if (p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()) {
                                 lista.add(p);
@@ -1136,3 +1137,4 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     }
 
 }
+//testando
