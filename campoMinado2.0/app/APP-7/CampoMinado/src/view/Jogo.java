@@ -34,7 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.DAOGeneric;
-import model.DAOPartida;
+//import model.DAOPartida;
 
 /**
  *
@@ -582,11 +582,8 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         } else {
                             if (p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()) {
                                 lista.add(p);
-<<<<<<< HEAD
+
                                 dao.update(p);
-=======
-//                                dao.update(lista);
->>>>>>> 258b1632d702c7b496b25348fc47953fd1e9d928
                             }
                         }
                         JOptionPane.showMessageDialog(null, pontos, "Pontuação!!", JOptionPane.OK_OPTION);
