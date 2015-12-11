@@ -5,9 +5,9 @@
  */
 package view;
 
-import classes.Global;
-import classes.Jogador;
-import classes.Time;
+import model.Global;
+import model.Jogador;
+import model.Time;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 

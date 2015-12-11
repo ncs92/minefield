@@ -5,8 +5,8 @@
  */
 package view;
 
-import classes.Global;
-import classes.Time;
+import model.Global;
+import model.Time;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 

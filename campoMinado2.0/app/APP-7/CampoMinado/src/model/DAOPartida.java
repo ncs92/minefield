@@ -3,19 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package campominado;
+package model;
 
 /**
  *
  * @author nani
  */
-public class CampoMinado {
+public class DAOPartida extends DAOGeneric{
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
+    public DAOPartida(Class clazz) {
+        super(clazz);
     }
     
 }

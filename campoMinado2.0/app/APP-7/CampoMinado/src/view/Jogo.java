@@ -5,11 +5,11 @@
  */
 package view;
 
-import classes.DAOPartida;
-import classes.Global;
-import classes.Jogador;
-import classes.Partida;
-import classes.Time;
+import model.DAOPartida;
+import model.Global;
+import model.Jogador;
+import model.Partida;
+import model.Time;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -458,7 +458,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
             private void sorteio() {
                 Random gerador = new Random();
-
+                cont += posZero.size();
                 Font fonte = new Font("Serif", Font.BOLD, 20);
                 for (int k = 0; k < posZero.size(); k++) {
                     int i = Integer.parseInt(posZero.get(k).split(" ")[0]);
@@ -614,7 +614,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                             dao.insert(p);
                         }else{
                             if(p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()){
-                                
+                                lista.add(p);
                                 dao.update(lista);
                             }
                         }
@@ -1082,6 +1082,22 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
 
                 }
             }
+        }
+        
+        int total = 0;
+        if (campo[0][1].getName().equals("0")) {
+            total++;
+        }
+        if (campo[1][0].getName().equals("0")) {
+            total++;
+        }
+        if (campo[1][1].getName().equals("0")) {
+            total++;
+        }
+        if(total != 0){
+        campo[0][0].setName(String.valueOf(total));            
+        }else{
+            posZero.add("00")
         }
     }
 
