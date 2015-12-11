@@ -21,18 +21,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
-/**
- *
- * @author nani
- */
 public class Principal extends javax.swing.JDialog {
 
     private PrincipalController controllerPrincipal;
     private String mapa;
 
-    /**
-     * Creates new form Principal
-     */
     public Principal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -206,14 +199,8 @@ public class Principal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton8x8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8x8ActionPerformed
-//        try {
-//            chamarJogo(8);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         controllerPrincipal.inicializar(mapa, 8);
+        dispose();
         try {
             new Jogo(null, true).setVisible(true);
         } catch (IOException ex) {
@@ -224,14 +211,8 @@ public class Principal extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton8x8ActionPerformed
 
     private void jButton16x16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16x16ActionPerformed
-//        try {
-//            chamarJogo(16);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         controllerPrincipal.inicializar(mapa, 16);
+        dispose();
         try {
             new Jogo(null, true).setVisible(true);
         } catch (IOException ex) {
@@ -242,14 +223,8 @@ public class Principal extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton16x16ActionPerformed
 
     private void jButton4x4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4x4ActionPerformed
-//        try {
-//            chamarJogo(4);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         controllerPrincipal.inicializar(mapa, 4);
+        dispose();
         try {
             new Jogo(null, true).setVisible(true);
         } catch (IOException ex) {
@@ -260,19 +235,8 @@ public class Principal extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton4x4ActionPerformed
 
     private void jButtonPersonalizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPersonalizadoActionPerformed
-//        int tamanho = 0;
-//        try {
-//            tamanho = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite um número inteiro para o tamanho da matriz do tabuleiro "));
-//            while (tamanho > 20) {
-//                tamanho = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite um número inteiro menor que 20"));
-//            }
-//            chamarJogo(tamanho);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         controllerPrincipal.personalizado(mapa);
+        dispose();
         try {
             new Jogo(null, true).setVisible(true);
         } catch (IOException ex) {
@@ -348,13 +312,4 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
-//    private void chamarJogo(int i) throws IOException, URISyntaxException {
-//
-//        String mapa = jComboBoxMapa.getSelectedItem().toString();
-//        controllerPrincipal.inicializar(mapa, i);
-//
-//        this.dispose();
-//        new Jogo(null, true).setVisible(true);
-////        this.setDefaultCloseOperation(Principal.EXIT_ON_CLOSE);    
-//    }
 }
