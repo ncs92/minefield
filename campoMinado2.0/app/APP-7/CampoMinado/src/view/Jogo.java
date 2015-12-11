@@ -5,7 +5,6 @@
  */
 package view;
 
-
 import model.Global;
 import model.Jogador;
 import model.Partida;
@@ -76,6 +75,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
          System.out.println("\n "+i+" "+ " "+j+" : "+campo[i][j].getName());
          }
          }*/
+       
         executaTempo = true;
         if (p.getJogador().getTempo() != null) {
             int min = p.getJogador().getTempo().getMinutos();
@@ -219,6 +219,11 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         jLabelBomba.setName("jBomba"); // NOI18N
 
         jButtonVitorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/trophy.png"))); // NOI18N
+        jButtonVitorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVitoriasActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(153, 0, 0));
@@ -334,6 +339,14 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButtonVitoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVitoriasActionPerformed
+        DAOPartida dao = null;
+        ArrayList<Partida> lista = new ArrayList<>();
+        lista = (ArrayList<Partida>) dao.list();
+        String aux = String.valueOf(lista.get(0).getJogador().getNome() + " " + lista.get(0).getJogador().getPontuacao());
+        JOptionPane.showMessageDialog(null, aux, "Maior Resultado : ", JOptionPane.OK_OPTION);
+    }//GEN-LAST:event_jButtonVitoriasActionPerformed
     /**
      * @param args the command line arguments
      * @throws java.io.IOException
@@ -612,16 +625,17 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         DAOPartida dao = null;
                         p.getJogador().setPontuacao(pontos);
                         ArrayList<Partida> lista = (ArrayList) dao.list();
-                        if(lista.isEmpty()){
+                        if (lista.isEmpty()) {
                             dao.insert(p);
-                        }else{
-                            if(p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()){
+                            
+                        } else {
+                            if (p.getJogador().getPontuacao() >= lista.get(0).getJogador().getPontuacao()) {
                                 lista.add(p);
                                 dao.update(lista);
                             }
                         }
                         JOptionPane.showMessageDialog(null, pontos, "Pontuação!!", JOptionPane.OK_OPTION);
-                        
+
                         int op = JOptionPane.showConfirmDialog(null, "Você ganhou!! Deseja ir para o proximo nivel ?!", "You Winnn!!!", JOptionPane.YES_NO_OPTION);
                         if (op == JOptionPane.YES_OPTION) {
                             dispose();
@@ -637,9 +651,11 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
                     if (botaoClicado.isEnabled()) {
                         ImageIcon icon;
+                        System.out.println("\n qtd bandeira :" + qtdBandeira);
+                        System.out.println("\n qtd bombas :" + quantidadeBombas);
                         if (botaoClicado.getIcon() == null) {
 
-                            if (qtdBandeira < (int) quantidadeBombas) {
+                            if (qtdBandeira < posBombas.size()) {
                                 qtdBandeira += 1;
                                 cont++;
                                 if (tam == 4) {
@@ -1076,7 +1092,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                         String aux = String.valueOf(i) + " " + String.valueOf(j);
                         posZero.add(aux);
                         campo[i][j].setName("99");
-
+                        System.out.println("\n" + i + " " + j + " Entrou");
                     } else {
                         campo[i][j].setForeground(Color.RED);
                         campo[i][j].setName(String.valueOf(bomba));
@@ -1085,7 +1101,7 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
                 }
             }
         }
-        
+
         int total = 0;
         if (campo[0][1].getName().equals("0")) {
             total++;
@@ -1096,11 +1112,29 @@ public final class Jogo extends javax.swing.JDialog implements ActionListener {
         if (campo[1][1].getName().equals("0")) {
             total++;
         }
-        if(total != 0){
-        campo[0][0].setName(String.valueOf(total));            
-        }else{
-//            posZero.add("00")
+        if (total != 0) {
+            campo[0][0].setName(String.valueOf(total));
+        } else {
+            String aux = String.valueOf(0) + " " + String.valueOf(0);
+            campo[0][0].setName(String.valueOf("99"));
+            posZero.add(aux);
         }
+        System.out.println("\n -------------- pos --------------");
+        for (int i = 0; i < campo.length; i++) {
+            for (int j = 0; j < campo.length; j++) {
+                System.out.println("\n ------");
+                System.out.println("\n " + i + " " + " " + j + " : " + campo[i][j].getName());
+            }
+        }
+        System.out.println("\n -----------------");
+        System.out.println("\n --------------- Bombas ---------------");
+        System.out.println(posBombas.toString());
+        System.out.println("\n ----------------------------------------------");
+        System.out.println("\n ------------------ vazio -------------------------");
+        System.out.println(posZero.toString());
+        System.out.println("\n ----------------------------------------------");
+
     }
 
 }
+//testando

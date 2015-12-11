@@ -17,6 +17,7 @@ public class DAOGeneric<T> {
         em.getTransaction().begin();
         em.persist(entity);
         em.getTransaction().commit();
+        System.out.println("\n inseriuuu \n");
     }
 
     public void update(T entity) {
